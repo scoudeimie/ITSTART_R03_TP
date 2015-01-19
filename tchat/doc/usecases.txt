@@ -1,0 +1,103 @@
+Créer la base de données
+
+Créer un formulaire d'authentification
+	-> Créer le formulaire en HTML
+	-> Créer la feuille de style en CSS
+
+Intégrer le formulaire d'authentification dans du PHP
+
+Authentification
+	-> La base de données doit être disponible
+	-> Se connecter à la base de données en PHP
+	-> Créer la requête SQL pour récupérer le login/mot de passe
+	-> Comparer les informations avec celles saisies dans le formulaire
+	-> Renvoyer la page de l'application si authentification OK
+	-> Renvoyer au formulaire d'authentification sinon
+
+Créer la page de l'application
+	-> Créer la page HTML
+		-> ne pas mettre le champs de saisie de message dans le cas d'un visiteur
+		-> liste des salons
+		-> liste des utilisateurs connectés au salon sélectionné
+		-> liste des messages du salon sélectionné
+	-> Créer le fichier CSS
+	-> Créer le script Javascript d'interactivité
+	-> La page ne doit être affichée que si l'utilisateur a un profil
+
+Créer le formulaire d'Inscription
+	-> Créer le formulaire en HTML (champs pseudo, mdp, profil, email) 
+	-> Créer la feuille de style en CSS
+
+Créer le formulaire de l'Administrateur
+	-> Créer le formulaire HTML
+		-> bouton Création de Salon
+		-> bouton Validation d'inscription
+	-> Créer le fichier CSS
+	-> Le formulaire ne doit être affiché que si l'utilisateur a le profil "Administrateur"	
+
+Créer le formulaire du Modérateur
+	-> Créer le formulaire HTML
+		-> Liste des messages à modérer
+		-> deux boutons par message : valider, supprimer
+	-> Créer le fichier CSS
+	-> Créer le fichier Javascript d'interactivité
+	-> Le formulaire ne doit être affiché que si l'utilisateur a le profil "Modérateur" ou "Administrateur"
+		
+Créer le formulaire de la création du salon
+	-> Créer le formulaire HTML
+		-> Champ Nom du salon
+		-> Champ date de début d'ouverture
+		-> Champ date de fin d'ouverture
+		-> Case à cocher si salon permanent
+		-> Case à cocher si salon modéré
+	-> Créer le fichier CSS
+	
+Créer le formulaire de la validation des pré-inscrits
+	-> Créer le formulaire HTML
+		-> Liste des utilisateurs pré-isncrits
+		-> Chaque ligne possède une sélection de profil et 2 boutons (valider, supprimer)
+	-> Créer le fichier CSS
+	-> Créer le fichier Javascript d'interactivité
+	
+Créer le script PHP "controleur" de l'application Tchat
+	-> Tests du script
+	
+Créer le script PHP vérifiant l'authentification
+	-> Tests du script
+	
+Créer le script PHP inscrivant un utilisateur
+	-> Tests du script
+	
+Créer le script PHP renvoyant la liste des salons
+	-> Tests du script
+	
+Créer le script PHP renvoyant la liste des utilisateurs connectés à un salon
+	-> Tests du script
+
+Créer le script PHP renvoyant la liste des messages d'un salon
+	-> Optimiser en affichant que les derniers messages
+	-> Tests du script
+
+Créer le script PHP renvoyant la liste des messages à modérer
+	-> Tests du script
+
+Créer le script PHP permettant l'administration de l'application
+	-> Il affiche par défaut l'écran d'administration
+	-> Si choix de création de salon, il affiche l'écran de création de salon
+	-> Si choix de validation d'inscription, il affiche l'écran de validation
+	-> Tests du script
+	
+Créer le script PHP créant un salon
+	-> Tests du script
+
+Créer le script PHP validant une pré-inscription
+	-> Tests du script
+
+Créer le script PHP insérant un message dans un salon
+	-> Tests du script
+
+Créer le script PHP modérant un message
+	-> Tests du script
+	
+Créer le script PHP pour quitter un ou plusieurs salons
+	-> Tests du script

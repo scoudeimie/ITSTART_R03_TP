@@ -1,0 +1,48 @@
+/*
+	Fichier CSS de l'application Tchat 1.0
+	
+	@author Serge COUDÉ
+	@since 2014-12-23
+	
+*/
+
+/*
+ * Style pour le titre de l'application 
+ */
+h1 {
+	text-align: center;
+	color: gray;
+	font-size: 35px;
+}
+
+/*
+ * Style pour le lien de retour
+ */
+.lienRetour {
+	text-align: center;
+	text-decoration: none;
+	background-color: gray;
+	color: black;
+	font-size: 25px;
+	border-width: 1px;
+	margin: auto;
+	display: block;
+}
+
+/*
+ * Style appliqué au formulaire
+ */
+#formulaireAuthentification {
+	width: 500px; 
+	height: 200px; 
+	margin: 25px auto; 
+	margin: 25px auto 25px auto;
+	margin-top: 25px;
+	margin-right: auto;
+	margin-bottom: 25px;
+	margin-left: auto;
+	background-color: #CCC;
+	text-align: center;
+	padding: 30px;
+}
+
