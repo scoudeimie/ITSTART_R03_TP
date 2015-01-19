@@ -30,9 +30,9 @@ h1 {
 }
 
 /*
- * Style appliqué au formulaire
+ * Style appliqué aux formulairesw
  */
-#formulaireAuthentification {
+.formulaire {
 	width: 500px; 
 	height: 200px; 
 	margin: 25px auto; 
