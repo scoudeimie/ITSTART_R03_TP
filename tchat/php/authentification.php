@@ -11,7 +11,7 @@
 	$lesLogins["célia"] = "titi";
 	*/
 	
-	include("config.inc.php");
+	//include("config.inc.php");
 	require("libbdd.inc.php");
 	
 	define("AUTH_OK", 2);

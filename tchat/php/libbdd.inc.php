@@ -7,6 +7,8 @@
 	 * @author Serge COUDÉ
 	 * @since 20/01/2015
 	 */
+	 
+	require("config.inc.php");
 
 	/**
 	 * Charge la configuration d'accès à la base de données
@@ -50,7 +52,10 @@
 			   ";port=" . $conf["dbport"] . ";dbname=" .
 			   $conf["dbname"] . ";";
 		try {
-			$pdo = new PDO($dsn, $conf["dblogin"], $conf["dbpassword"]);
+			$pdo = new PDO($dsn, 
+						   $conf["dblogin"], 
+						   $conf["dbpassword"], 
+						   array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 			return $pdo;
 		} catch(PDOException $e) {
 			// Je gère les erreurs de connexion

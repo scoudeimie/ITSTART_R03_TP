@@ -2,6 +2,10 @@
 	
 	require("libbdd.inc.php");
 	
+	define('INSCR_OK', 1);
+	define('INSCR_PSEUDO_EXIST', 2);
+	define('INSCR_EMAIL_EXIST', 3);
+	
 	/**
 	 * Vérifie si le pseudo est correct ou non
 	 *
@@ -65,7 +69,7 @@
 	 * @param $mdp Mot de passe
 	 * @param $email Courriel de l'utilisateur
 	 * @param $profil Id du profil demandé
-	 * @return Vrai ou Faux si cela s'est bien passé
+	 * @return Code de retour (bien passé, pseudo existant, courriel existant)
 	 */
 	function inscription($pseudo, $mdp, $email, $profil) {
 		// Chargement de la configuration
@@ -74,7 +78,7 @@
 		$pdo = cnxBDD($dbConf);
 		// Exécution de la requête
 		// Je définie le "modèle" de ma requête
-		$req = "INSERT INTO (pseudo, password, email, id_profil) " .
+		$req = "INSERT INTO Utilisateur (pseudo, password, email, id_profil) " .
 			   "VALUES (:pseudo, :password, :email, :profil);";
 		// Je prépare ma requête et j'obtient un objet la représentant
 		$pdoStmt = $pdo->prepare($req);
@@ -84,24 +88,36 @@
 		$pdoStmt->bindParam(':email', $email);
 		$pdoStmt->bindParam(':profil', $profil);
 		// J'exécute ma requête
-		$pdoStmt->execute();
+		try {
+			$pdoStmt->execute();
+		} catch(PDOException $e) {
+			$codeErr = $e->getCode();
+			switch($codeErr) {
+				case 23000:
+					return INSCR_PSEUDO_EXIST;
+				default:	
+					die($e->getCode() . " / " . $e->getMessage());
+			}		
+		}
 		$pdoStmt = NULL;
 		$pdo = NULL;
-		return true;
+		return INSCR_OK;
 	}
 	
 	if (checkPseudo($_POST["pseudo"])) {
 		// on continue à checker
 		if (checkMdp($_POST["mdp"], $_POST["mdp2"])) {
 			if (checkCourriel($_POST["email"])) {
-				if (inscription($_POST["pseudo"], 
+				$res = inscription($_POST["pseudo"], 
 								md5($_POST["mdp"]),
 								$_POST["email"],
-								$_POST["profil"])) {
-					die("vous &ecirc;tes bien inscrit !");
-				} else {
-					die("vous n'avez pas &eacute;t&eacute; inscrit...");
-				}	
+								$_POST["profil"]);
+				switch($res) {
+					case INSCR_OK:
+						die("Vous avez &eacute;t&eacute; bien inscrit !");
+					case INSCR_PSEUDO_EXIST:
+						die("Votre pseudo est d&eacute;j&agrave; pr&eacute;sent...");
+				}		
 			} else {
 				die("le courriel est mal form&eacute;...");
 			}
