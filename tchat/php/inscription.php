@@ -91,17 +91,26 @@
 		try {
 			$pdoStmt->execute();
 		} catch(PDOException $e) {
+			// En cas d'erreur, je récupère le code
 			$codeErr = $e->getCode();
 			switch($codeErr) {
-				case 23000:
-					return INSCR_PSEUDO_EXIST;
+				case 23000: // C'est une valeur déjà présente dans la table
+					// "pseudo" n'est pas présent dans le message
+					if (strpos($e->getMessage(), "pseudo") === false ) {
+						// C'est donc le courriel qui est déjà présent
+						return INSCR_EMAIL_EXIST;
+					} else {
+						// C'est bien le pseudo qui existe déjà
+						return INSCR_PSEUDO_EXIST;
+					}
 				default:	
+					// juste pour d'éventuelles gestions de nouvelles erreurs
 					die($e->getCode() . " / " . $e->getMessage());
 			}		
 		}
-		$pdoStmt = NULL;
-		$pdo = NULL;
-		return INSCR_OK;
+		$pdoStmt = NULL; // On "désalloue" l'objet représentant la requête
+		$pdo = NULL; // On "désalloue" l'objet de la connexion -> fin de la cnx
+		return INSCR_OK; // Tout s'est bien passé, on renvoie "OK"
 	}
 	
 	if (checkPseudo($_POST["pseudo"])) {
@@ -117,6 +126,8 @@
 						die("Vous avez &eacute;t&eacute; bien inscrit !");
 					case INSCR_PSEUDO_EXIST:
 						die("Votre pseudo est d&eacute;j&agrave; pr&eacute;sent...");
+					case INSCR_EMAIL_EXIST:
+						die("Votre courriel est d&eacute;j&agrave; utilis&eacute;...");
 				}		
 			} else {
 				die("le courriel est mal form&eacute;...");
