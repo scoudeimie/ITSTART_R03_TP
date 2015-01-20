@@ -12,9 +12,9 @@ USE tchatprive;
 
 CREATE TABLE Utilisateur(
         id_utilisateur int (11) Auto_increment  NOT NULL ,
-        pseudo         Varchar (25) ,
-        password       Varchar (50) ,
-        email          Varchar (50) ,
+        pseudo         Varchar (25) UNIQUE NOT NULL,
+        password       Varchar (50) NOT NULL,
+        email          Varchar (50) UNIQUE NOT NULL,
         id_profil      Int ,
         PRIMARY KEY (id_utilisateur )
 )ENGINE=InnoDB;
