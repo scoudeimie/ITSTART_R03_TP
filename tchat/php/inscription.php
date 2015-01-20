@@ -1,5 +1,7 @@
 <?php
 	
+	require("libbdd.inc.php");
+	
 	/**
 	 * Vérifie si le pseudo est correct ou non
 	 *
@@ -56,11 +58,50 @@
 		return filter_var($courriel, FILTER_VALIDATE_EMAIL);
 	}
 	
+	/**
+	 * Inscrit dans la base le nouvel utilisateur
+	 *
+	 * @param $pseudo Pseudo à insérer
+	 * @param $mdp Mot de passe
+	 * @param $email Courriel de l'utilisateur
+	 * @param $profil Id du profil demandé
+	 * @return Vrai ou Faux si cela s'est bien passé
+	 */
+	function inscription($pseudo, $mdp, $email, $profil) {
+		// Chargement de la configuration
+		$dbConf = chargeConfiguration();
+		// Connexion à la base de données
+		$pdo = cnxBDD($dbConf);
+		// Exécution de la requête
+		// Je définie le "modèle" de ma requête
+		$req = "INSERT INTO (pseudo, password, email, id_profil) " .
+			   "VALUES (:pseudo, :password, :email, :profil);";
+		// Je prépare ma requête et j'obtient un objet la représentant
+		$pdoStmt = $pdo->prepare($req);
+		// J'associe à ma requête le contenu des variables
+		$pdoStmt->bindParam(':pseudo', $pseudo);
+		$pdoStmt->bindParam(':password', $mdp);
+		$pdoStmt->bindParam(':email', $email);
+		$pdoStmt->bindParam(':profil', $profil);
+		// J'exécute ma requête
+		$pdoStmt->execute();
+		$pdoStmt = NULL;
+		$pdo = NULL;
+		return true;
+	}
+	
 	if (checkPseudo($_POST["pseudo"])) {
 		// on continue à checker
 		if (checkMdp($_POST["mdp"], $_POST["mdp2"])) {
 			if (checkCourriel($_POST["email"])) {
-				die("on peut vous inscrire !");
+				if (inscription($_POST["pseudo"], 
+								md5($_POST["mdp"]),
+								$_POST["email"],
+								$_POST["profil"])) {
+					die("vous &ecirc;tes bien inscrit !");
+				} else {
+					die("vous n'avez pas &eacute;t&eacute; inscrit...");
+				}	
 			} else {
 				die("le courriel est mal form&eacute;...");
 			}
