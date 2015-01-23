@@ -152,6 +152,26 @@
 		return $options;
 	} // Fin de la fonction creerListeProfils
 	
+	/**
+	 * Affiche la page HTML indiquant le résultat de l'inscription
+	 *
+	 * @param $msg Message à afficher
+	 * @param $res Cela s'est-il bien passé ou non ?
+	 */
+	function afficheResultat($msg, $res) {
+		global $self;
+		// Si cela s'est bien passé
+		if ($res) {
+			$classRes = "resOK";
+			$retour = $self . "?action=fauthentification";
+		} else { // Sinon
+			$classRes = "resKO";
+			$retour = $self . "?action=finscription";
+		}
+		include(__DIR__ . "/../html/inscription_res.html");
+		die();
+	}
+	
 	// Si il y a eu soumission de formulaire
 	if (isset($_POST["pseudo"])) {
 		// Alors on procède à l'inscription
@@ -165,20 +185,26 @@
 									$_POST["profil"]);
 					switch($res) {
 						case INSCR_OK:
-							die("Vous avez &eacute;t&eacute; bien inscrit !");
+							afficheResultat("Vous avez &eacute;t&eacute; bien inscrit !",
+											true);
 						case INSCR_PSEUDO_EXIST:
-							die("Votre pseudo est d&eacute;j&agrave; pr&eacute;sent...");
+							afficheResultat("Votre pseudo est d&eacute;j&agrave; pr&eacute;sent...",
+											false);
 						case INSCR_EMAIL_EXIST:
-							die("Votre courriel est d&eacute;j&agrave; utilis&eacute;...");
+							afficheResultat("Votre courriel est d&eacute;j&agrave; utilis&eacute;...",
+											false);
 					}		
 				} else {
-					die("le courriel est mal form&eacute;...");
+					afficheResultat("le courriel est mal form&eacute;...",
+									false);
 				}
 			} else {
-				die("les mots de passe ne correspondent pas...");
+				afficheResultat("les mots de passe ne correspondent pas...",
+								false);
 			}	
 		} else {
-			die("le pseudo n'est pas correct...");
+			afficheResultat("le pseudo n'est pas correct...",
+							false);
 		}
 	} else {
 		// Si pas de soumission de formulaire, on affiche le formulaire
