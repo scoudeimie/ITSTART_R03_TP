@@ -9,7 +9,11 @@
 		
 	switch($action) {
 		case 'finscription':
-			include(__DIR__ . "/inscription2.php");
+			$self .= "?action=ainscription";
+			include(__DIR__ . "/inscription.php");
+			break;
+		case 'ainscription':
+			include(__DIR__ . "/inscription.php");
 			break;
 		case 'fauthentification':
 			include(__DIR__ . "/../html/authentification.html");
