@@ -13,9 +13,7 @@
 			<p>Mot de passe : <input type="password" name="mdp" /></p>
 			<p>Confirmation du mot de passe : <input type="password" name="mdp2" /></p>
 			<p><select name="profil">
-					<option value="1">Administrateur</option>
-					<option value="2">Mod&eacute;rateur</option>
-					<option value="3" selected="selected">Utilisateur</option>
+					<?= $lesProfils ?>
 				</select></p>	
 			<input type="submit" value="Valider" name="valider" />
 		</form>
