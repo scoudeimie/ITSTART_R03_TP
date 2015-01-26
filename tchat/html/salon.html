@@ -9,7 +9,7 @@
 		<h1>Cr&eacute;ation d'un salon</h1>
 		<form class="formulaire" method="POST" action="<?= $self ?>">
 			<p>Nom du salon : <input type="text" name="salonNom"/></p>
-			<p>Date d'ouverture  : <input type="date" name="salonDate"/></p>
+			<p>Date d'ouverture  : <input type="date" name="salonDate" placeholder="AAAA-MM-JJ HH:MM:SS"/></p>
 			<p>Dur&eacute;e (') : <select name="salonDuree" ><?= $listeDurees ?></select></p>
 			<input type="submit" value="Valider" name="valider" />
 		</form>

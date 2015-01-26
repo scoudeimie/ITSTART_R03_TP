@@ -73,3 +73,39 @@ h1 {
 	background-color: #FF0000;
 	color: white;
 }
+
+header {
+}
+
+#userinfo {
+	width: 20%;
+	border: 1px solid black;
+	padding: 5px;
+	text-align: center;
+	border-radius: 15px;
+	font-size: 10px;
+	float: right;
+}
+
+header  button {
+	font-size: 6px;
+	margin: 0px;
+}	
+
+header p {
+	margin: 0px;
+}	
+
+#divSalAve {
+	width: 30%;
+	border: 1px solid black;
+	border-radius: 15px;
+	height: 20vmax;
+}
+
+#divSalOuv {
+	width: 30%;
+	border: 1px solid black;
+	border-radius: 15px;
+	height: 40%;
+}
