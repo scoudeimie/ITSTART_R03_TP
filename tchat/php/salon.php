@@ -6,6 +6,19 @@
 	define('SALON_NOM_EXIST', 2);
 	
 	/**
+	 * Vérifie si le nom du salon est correct ou non
+	 *
+	 * Le nom du salon doit contenir que A-Za-z0-9-_
+	 *
+	 * @param $nom Nom du salon à vérifier
+	 * @return Vrai ou faux selon le nom du salon
+	 */
+	function checkSalonNom($nom) {
+		// Utilisation des expressions régulières
+		return preg_match('/^[A-Za-z0-9\-\ _]{1,25}$/', $nom);
+	} // Fin de la fonction checkSalonNom
+	
+	/**
 	 * Inscrit dans la base le nouveau salon
 	 *
 	 * @param $salonNom Nom du salon à créer
@@ -61,7 +74,7 @@
 		$options = "";
 		// durées autorisées de 15' à 4h
 		for($i = 15; $i <= 240; $i += 15) {
-			$libelle = date("H\hi", $i*60-3600);
+			$libelle = gmdate("H\hi", $i*60);
 			$options .= '<option value="' . $i . '">' . $libelle . '\'</option>';
 		}
 		// On renvoie la chaîne contenant les options
@@ -82,28 +95,36 @@
 			$retour = $self . "?action=fauthentification";
 		} else { // Sinon
 			$classRes = "resKO";
-			$retour = $self . "?action=finscription";
+			$retour = $self . "?action=fsalon";
 		}
-		include(__DIR__ . "/../html/inscription_res.html");
+		include(__DIR__ . "/../html/salon_res.html");
 		die();
 	}
 	
 	// Si il y a eu soumission de formulaire
 	if (isset($_POST["salonNom"])) {
-		// Alors on procède à la création du salon
-		$res = creerSalon($_POST["salonNom"], 
-						  $_POST["salonDate"]),
-						  $_POST["salonDuree"]);
-						  /* TODO 
-							Ajouter l'id de l'utilisateur
-						  */	
-		switch($res) {
-			case SALON_CREATION_OK:
-				afficheResultat("Le salon a bien &eacute;t&eacute; cr&eacute;&eacute;",
-								true);
-			case SALON_NOM_EXIST:
-				afficheResultat("Un salon de m&ecirc;me nom est d&eacute;j&agrave; pr&eacute;sent...",
-								false);
+		// Si le nom est correct
+		if (checkSalonNom($_POST["salonNom"])) {
+			// Alors on procède à la création du salon
+			$duree = gmdate("h:i:00", $_POST["salonDuree"]*60);
+			$res = creerSalon($_POST["salonNom"], 
+							  $_POST["salonDate"],
+							  $duree);
+							  /* TODO 
+								Ajouter l'id de l'utilisateur
+							  */	
+			switch($res) {
+				case SALON_CREATION_OK:
+					afficheResultat("Le salon a bien &eacute;t&eacute; cr&eacute;&eacute;",
+									true);
+				case SALON_NOM_EXIST:
+					afficheResultat("Un salon de m&ecirc;me nom est d&eacute;j&agrave; pr&eacute;sent...",
+									false);
+			}						
+		} else { // Le nom n'est pas correct
+			afficheResultat("Le nom du salon n'est pas correct...",
+							false);
+		}
 	} else {
 		// Si pas de soumission de formulaire, on affiche le formulaire
 		$listeDurees = creerListeDureesOuveture();

@@ -27,7 +27,7 @@
 			include(__DIR__ . "/salon.php");
 			die();
 		case 'asalon':
-			include(__DIR__ . "/authentification.php");
+			include(__DIR__ . "/salon.php");
 			break;
 		default:
 			die("Vous demandez a avoir le formulaire d'authentification (2)");

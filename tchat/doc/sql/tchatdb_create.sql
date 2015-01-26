@@ -29,10 +29,10 @@ CREATE TABLE Profil(
 
 CREATE TABLE Salon(
         id_salon       int (11) Auto_increment  NOT NULL ,
-        nom            Varchar (25) ,
-        ouverture      Datetime ,
-        duree          Time ,
-        id_utilisateur Int ,
+        nom            Varchar (25) UNIQUE NOT NULL,
+        ouverture      Datetime NOT NULL,
+        duree          Time NOT NULL,
+        id_utilisateur Int NOT NULL,
         PRIMARY KEY (id_salon )
 )ENGINE=InnoDB;
 
