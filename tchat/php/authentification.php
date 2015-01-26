@@ -118,20 +118,45 @@
 	} // Fin de la fonction authentification
 	*/
 	
-	// On appelle la fonction et on stocke le résultat dans $res
-	$res = authentification($_POST["pseudo"], $_POST["mdp"]);
+	/**
+	 * Affiche la page HTML indiquant le résultat de l'authentification
+	 *
+	 * @param $msg Message à afficher
+	 * @param $res Cela s'est-il bien passé ou non ?
+	 */
+	function afficheResultat($msg, $res) {
+		global $self;
+		// Si cela s'est bien passé
+		if ($res) {
+			$classRes = "resOK";
+			$retour = $self . "?action=fauthentifie";
+		} else { // Sinon
+			$classRes = "resKO";
+			$retour = $self . "?action=fauthentification";
+		}
+		include(__DIR__ . "/../html/authentification_res.html");
+		die();
+	}
 	
-	$pseudo = ucfirst($_POST["pseudo"]);
-	
-	// Selon le "code" résultat de l'authentification
-	switch($res) {
-		case AUTH_PSEUDO_KO : 
-			include(__DIR__ . "/../" . FILE_AUTH_PSEUDO_KO);
-			break;
-		case AUTH_MDP_KO :
-			include(__DIR__ . "/../" . FILE_AUTH_MDP_KO);
-			break;
-		case AUTH_OK :
-			include(__DIR__ . "/../" . FILE_AUTH_OK);
-			break;
-	}		
+	// Si il y a eu soumission de formulaire
+	if (isset($_POST["pseudo"])) {
+		// Alors on procède à l'authentification
+		// On appelle la fonction et on stocke le résultat dans $res
+		$res = authentification($_POST["pseudo"], $_POST["mdp"]);
+		$pseudo = ucfirst($_POST["pseudo"]);
+		// Selon le "code" résultat de l'authentification
+		switch($res) {
+			case AUTH_PSEUDO_KO : 
+				afficheResultat("Vous n'&ecirc;tes pas connu dans la base...",
+								false);
+			case AUTH_MDP_KO :
+				afficheResultat("Mauvais couple identifiant / mot de passe...",
+								false);
+			case AUTH_OK :
+				afficheResultat("Bonjour " . $_POST["pseudo"] . "!",
+								true);
+		}
+	} else {
+		// Si pas de soumission de formulaire, on affiche le formulaire
+		include(__DIR__ . '/../html/authentification.html');
+	}	

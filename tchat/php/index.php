@@ -16,8 +16,12 @@
 			include(__DIR__ . "/inscription.php");
 			break;
 		case 'fauthentification':
-			include(__DIR__ . "/../html/authentification.html");
+			$self .= "?action=aauthentification";
+			include(__DIR__ . "/authentification.php");
 			die();
+		case 'aauthentification':
+			include(__DIR__ . "/authentification.php");
+			break;				
 		default:
 			die("Vous demandez a avoir le formulaire d'authentification (2)");
 	}		
