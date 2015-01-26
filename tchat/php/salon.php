@@ -1,0 +1,189 @@
+<?php
+	
+	require("libbdd.inc.php");
+	
+	define('SALON_CREATION_OK', 1);
+	define('SALON_NOM_EXIST', 2);
+	
+	/**
+	 * Vérifie si le pseudo est correct ou non
+	 *
+	 * Le pseudo doit contenir que A-Za-z0-9
+	 *
+	 * @param $pseudo Pseudo à vérifier
+	 * @return Vrai ou faux selon le pseudo
+	 */
+	function checkPseudo($pseudo) {
+	
+		// Utilisation des expressions régulières
+		// return preg_match('/^[A-Za-z0-9]{4,50}$/', $pseudo);
+	
+		// Je mets chaque caractère dans un tableau
+		$tab = str_split($pseudo);
+		// Je parcours le tableau caractère par caractère
+		for($i = 0; $i < count($tab); $i++) {
+			// Je mets le caractère d'indice $i dans une variable $c
+			$c = $tab[$i];
+			// Si le caractère est compris entre
+			// 'A' et 'Z' ou 'a' et 'z' ou '0' et '9'
+			if (($c >= 'A' && $c <= 'z') ||
+			    ($c >= '0' && $c <= '9'))
+				// On continue la vérification...
+				continue;
+			else // Le caractère n'est pas conforme, on renvoie faux
+				return false;
+		}
+		// l'ensemble des caractères ont été vérifiés, on renvoie donc vrai
+		return true;
+	} // Fin de la fonction checkPseudo
+	
+	/**
+	 * Vérifie si les mots de passe concordent
+	 *
+	 * Les mots de passe doivent être identiques et non vides
+	 * 
+	 * @param $mdp1 Mot de passe original
+	 * @param $mdp2 Mot de passe de confirmation
+	 * @return Vrai si les mots de passe sont identiques et non vide, faux sinon
+	 */
+	function checkMdp($mdp1, $mdp2) {
+		// les deux mots de passe doivent être identiques et non vide
+		return ($mdp1 == $mdp2 && $mdp1 != ""); 
+	} // Fin de la fonction checkMdp
+	
+	/**
+	 * Vérifie si le courriel est bien formé ou non
+	 *
+	 * @param $courriel Courriel à tester
+	 * @return vrai ou faux suivant le courriel passé
+	 */
+	function checkCourriel($courriel) {
+		return filter_var($courriel, FILTER_VALIDATE_EMAIL);
+	}
+	
+	/**
+	 * Inscrit dans la base le nouvel utilisateur
+	 *
+	 * @param $pseudo Pseudo à insérer
+	 * @param $mdp Mot de passe
+	 * @param $email Courriel de l'utilisateur
+	 * @param $profil Id du profil demandé
+	 * @return Code de retour (bien passé, pseudo existant, courriel existant)
+	 */
+	function inscription($pseudo, $mdp, $email, $profil) {
+		// Chargement de la configuration
+		$dbConf = chargeConfiguration();
+		// Connexion à la base de données
+		$pdo = cnxBDD($dbConf);
+		// Exécution de la requête
+		// Je définie le "modèle" de ma requête
+		$req = "INSERT INTO Utilisateur (pseudo, password, email, id_profil) " .
+			   "VALUES (:pseudo, :password, :email, :profil);";
+		// Je prépare ma requête et j'obtient un objet la représentant
+		$pdoStmt = $pdo->prepare($req);
+		// J'associe à ma requête le contenu des variables
+		$pdoStmt->bindParam(':pseudo', $pseudo);
+		$pdoStmt->bindParam(':password', $mdp);
+		$pdoStmt->bindParam(':email', $email);
+		$pdoStmt->bindParam(':profil', $profil);
+		// J'exécute ma requête
+		try {
+			$pdoStmt->execute();
+		} catch(PDOException $e) {
+			// En cas d'erreur, je récupère le code
+			$codeErr = $e->getCode();
+			switch($codeErr) {
+				case 23000: // C'est une valeur déjà présente dans la table
+					// "pseudo" n'est pas présent dans le message
+					if (strpos($e->getMessage(), "pseudo") === false ) {
+						// C'est donc le courriel qui est déjà présent
+						return INSCR_EMAIL_EXIST;
+					} else {
+						// C'est bien le pseudo qui existe déjà
+						return INSCR_PSEUDO_EXIST;
+					}
+				default:	
+					// juste pour d'éventuelles gestions de nouvelles erreurs
+					die($e->getCode() . " / " . $e->getMessage());
+			}		
+		}
+		$pdoStmt = NULL; // On "désalloue" l'objet représentant la requête
+		$pdo = NULL; // On "désalloue" l'objet de la connexion -> fin de la cnx
+		return INSCR_OK; // Tout s'est bien passé, on renvoie "OK"
+	} // Fin de la fonction inscription
+	
+	/**
+	 * Renvoyer la liste des durées d'ouverture <option>
+	 *
+	 * @return string Liste des durées sous forme <option>
+	 */
+	function creerListeDureesOuveture() {
+		$options = "";
+		// durées autorisées de 15' à 4h
+		for($i = 15; $i <= 240; $i += 15) {
+			$libelle = date("H\hi", $i*60-3600);
+			$options .= '<option value="' . $i . '">' . $libelle . '\'</option>';
+		}
+		// On renvoie la chaîne contenant les options
+		return $options;
+	} // Fin de la fonction creerListeProfils
+	
+	/**
+	 * Affiche la page HTML indiquant le résultat de l'inscription
+	 *
+	 * @param $msg Message à afficher
+	 * @param $res Cela s'est-il bien passé ou non ?
+	 */
+	function afficheResultat($msg, $res) {
+		global $self;
+		// Si cela s'est bien passé
+		if ($res) {
+			$classRes = "resOK";
+			$retour = $self . "?action=fauthentification";
+		} else { // Sinon
+			$classRes = "resKO";
+			$retour = $self . "?action=finscription";
+		}
+		include(__DIR__ . "/../html/inscription_res.html");
+		die();
+	}
+	
+	// Si il y a eu soumission de formulaire
+	if (isset($_POST["pseudo"])) {
+		// Alors on procède à l'inscription
+		if (checkPseudo($_POST["pseudo"])) {
+			// on continue à checker
+			if (checkMdp($_POST["mdp"], $_POST["mdp2"])) {
+				if (checkCourriel($_POST["email"])) {
+					$res = inscription($_POST["pseudo"], 
+									md5($_POST["mdp"]),
+									$_POST["email"],
+									$_POST["profil"]);
+					switch($res) {
+						case INSCR_OK:
+							afficheResultat("Vous avez &eacute;t&eacute; bien inscrit !",
+											true);
+						case INSCR_PSEUDO_EXIST:
+							afficheResultat("Votre pseudo est d&eacute;j&agrave; pr&eacute;sent...",
+											false);
+						case INSCR_EMAIL_EXIST:
+							afficheResultat("Votre courriel est d&eacute;j&agrave; utilis&eacute;...",
+											false);
+					}		
+				} else {
+					afficheResultat("le courriel est mal form&eacute;...",
+									false);
+				}
+			} else {
+				afficheResultat("les mots de passe ne correspondent pas...",
+								false);
+			}	
+		} else {
+			afficheResultat("le pseudo n'est pas correct...",
+							false);
+		}
+	} else {
+		// Si pas de soumission de formulaire, on affiche le formulaire
+		$listeDurees = creerListeDureesOuveture();
+		include(__DIR__ . '/../html/salon.html');
+	}

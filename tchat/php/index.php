@@ -21,7 +21,14 @@
 			die();
 		case 'aauthentification':
 			include(__DIR__ . "/authentification.php");
-			break;				
+			break;
+		case 'fsalon':
+			$self .= "?action=asalon";
+			include(__DIR__ . "/salon.php");
+			die();
+		case 'asalon':
+			include(__DIR__ . "/authentification.php");
+			break;
 		default:
 			die("Vous demandez a avoir le formulaire d'authentification (2)");
 	}		
