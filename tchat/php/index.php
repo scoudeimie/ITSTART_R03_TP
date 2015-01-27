@@ -27,6 +27,7 @@
 			include(__DIR__ . "/salon.php");
 			die();
 		case 'asalon':
+		case 'messages':
 			include(__DIR__ . "/salon.php");
 			break;
 		default:

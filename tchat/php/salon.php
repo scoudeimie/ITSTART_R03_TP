@@ -113,8 +113,10 @@
 		$pdo = cnxBDD($dbConf);
 		// Exécution de la requête
 		// Je définie le "modèle" de ma requête
-		$req = "SELECT envoi, contenu, id_utilisateur " .
-			   "FROM message WHERE id_salon = :id_salon;";
+		$req = "SELECT envoi, contenu, pseudo " .
+			   "FROM message m ".
+			   "INNER JOIN utilisateur u ON m.id_utilisateur = u.id_utilisateur " . 
+			   "WHERE id_salon = :id_salon;";
 		// Je prépare ma requête et j'obtient un objet la représentant
 		$pdoStmt = $pdo->prepare($req);
 		// J'associe à ma requête le contenu de la variable
@@ -133,7 +135,7 @@
 		foreach($res as $enrg) {
 			echo $enrg["envoi"] . 
 			     " --- (" . 
-				 $enrg["id_utilisateur"] . 
+				 $enrg["pseudo"] . 
 				 ") : " . 
 				 $enrg["contenu"] . "<br />\n";
 		}
