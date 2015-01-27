@@ -4,6 +4,7 @@
 		<meta charset="utf-8" />
 		<title>Tchat 1.0</title>
 		<link rel="stylesheet" type="text/css" href="../css/tchat.css" />
+		<script type="text/javascript" src="../js/tchat.js"></script>
 	</head>
 	<body>
 	<header>
@@ -15,8 +16,22 @@
 		</div>				
 	</header>
 	<nav>
-		<div id="divSalOuv">Liste des salons ouverts</div>
-		<div id="divSalAve">Liste des salons &agrave; venir</div>
+		<p>Salons ouverts :</p>
+		<div id="divSalOuv" class="divSalons">
+			<ul>
+				<?php foreach ($tabSalonsOuverts as $salon): ?>
+					<li><?= $salon["nom"] ?></li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+		<p>Salons &agrave; venir :</p>
+		<div id="divSalAve" class="divSalons">
+			<ul>
+				<?php foreach ($tabSalonsAvenir as $salon): ?>
+					<li onclick="afficheSalon('<?= $salon["id_salon"] ?>');"><?= $salon["nom"] ?></li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
 	</nav>
 	<footer>
 		<p>&copy; Serge COUD&Eacute;</p>

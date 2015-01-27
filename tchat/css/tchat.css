@@ -82,7 +82,7 @@ header {
 	border: 1px solid black;
 	padding: 5px;
 	text-align: center;
-	border-radius: 15px;
+	border-radius: 10px;
 	font-size: 10px;
 	float: right;
 }
@@ -96,16 +96,57 @@ header p {
 	margin: 0px;
 }	
 
-#divSalAve {
+.divSalons {
 	width: 30%;
 	border: 1px solid black;
-	border-radius: 15px;
-	height: 20vmax;
+	border-radius: 10px;
+	height: 10vmax;
+	font-size: 12px;
+	padding: 5px;
+}
+
+nav p {
+	font-size: 12px;
+	margin: 0px;
+}
+
+#divSalAve {
 }
 
 #divSalOuv {
-	width: 30%;
+}
+
+#main {
+	width: 40%;
+	height: 30vmax;
 	border: 1px solid black;
-	border-radius: 15px;
-	height: 40%;
+	position: absolute;
+	left: 35%;
+	top: 3vmax;
+	font-size: 10px;
+}
+
+footer p {
+	float: right;
+	font-size: 10px;
+	font-style: italic;
+	font-weight: bold;
+}
+
+#messages {
+	height: 27vmax;
+	
+}
+
+#divFormMsg {
+	height: 2vmax;
+	font-size: 12px;
+}
+
+#divFormMsg input[type="text"] {
+	width: 70%;
+}
+#divFormMsg input[type="submit"] {
+	font-size: 10px;
+	width: 25%;
 }
