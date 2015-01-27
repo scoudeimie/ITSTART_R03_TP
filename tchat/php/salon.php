@@ -101,6 +101,45 @@
 		die();
 	}
 	
+	/**
+	 * Renvoie la liste des messages d'un salon
+	 *
+	 * @param $id_salon Id du salon
+	 */
+	function getSalonMessages($id_salon) {
+		// Chargement de la configuration
+		$dbConf = chargeConfiguration();
+		// Connexion à la base de données
+		$pdo = cnxBDD($dbConf);
+		// Exécution de la requête
+		// Je définie le "modèle" de ma requête
+		$req = "SELECT envoi, contenu, id_utilisateur " .
+			   "FROM message WHERE id_salon = :id_salon;";
+		// Je prépare ma requête et j'obtient un objet la représentant
+		$pdoStmt = $pdo->prepare($req);
+		// J'associe à ma requête le contenu de la variable
+		$pdoStmt->bindParam(':id_salon', $id_salon);
+		// J'exécute ma requête
+		try {
+			$pdoStmt->execute();
+		} catch(PDOException $e) {
+			// En cas d'erreur, j'affiche le message
+			die($e->getCode() . " / " . $e->getMessage());
+		}
+		// On récupère les enregistrements sous forme d'un tableau
+		$res = $pdoStmt->fetchAll(PDO::FETCH_ASSOC);
+		$pdoStmt = NULL; // On "désalloue" l'objet représentant la requête
+		$pdo = NULL; // On "désalloue" l'objet de la connexion -> fin de la cnx
+		foreach($res as $enrg) {
+			echo $enrg["envoi"] . 
+			     " --- (" . 
+				 $enrg["id_utilisateur"] . 
+				 ") : " . 
+				 $enrg["contenu"] . "<br />\n";
+		}
+		die();
+	}
+	
 	// Si il y a eu soumission de formulaire
 	if (isset($_POST["salonNom"])) {
 		// Si le nom est correct
@@ -125,6 +164,9 @@
 			afficheResultat("Le nom du salon n'est pas correct...",
 							false);
 		}
+	} else if (isset($_GET["id_salon"])) {
+		// On demande la liste des messages d'un salon
+		getSalonMessages($_GET["id_salon"]);
 	} else {
 		// Si pas de soumission de formulaire, on affiche le formulaire
 		$listeDurees = creerListeDureesOuveture();
