@@ -132,6 +132,7 @@
 		$res = $pdoStmt->fetchAll(PDO::FETCH_ASSOC);
 		$pdoStmt = NULL; // On "désalloue" l'objet représentant la requête
 		$pdo = NULL; // On "désalloue" l'objet de la connexion -> fin de la cnx
+		header('Content-Type: text/html; charset=utf-8');
 		foreach($res as $enrg) {
 			echo $enrg["envoi"] . 
 			     ";" . 

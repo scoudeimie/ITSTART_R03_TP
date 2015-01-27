@@ -50,7 +50,7 @@
 		//$dsn = "mysql:host=127.0.0.1;port=3306;dbname=tchatprive;";
 		$dsn = $conf["dbtype"] . ":host=" . $conf["dbhost"] . 
 			   ";port=" . $conf["dbport"] . ";dbname=" .
-			   $conf["dbname"] . ";";
+			   $conf["dbname"] . ";charset=UTF8";
 		try {
 			$pdo = new PDO($dsn, 
 						   $conf["dblogin"], 
