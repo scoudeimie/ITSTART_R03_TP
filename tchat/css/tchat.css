@@ -150,3 +150,15 @@ footer p {
 	font-size: 10px;
 	width: 25%;
 }
+
+.message {
+	margin: 0px;
+}
+
+.message .pseudo {
+	font-style: italic;
+}	
+
+span.message {
+	font-weight: bold;
+}
