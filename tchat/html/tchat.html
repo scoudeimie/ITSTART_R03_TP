@@ -20,7 +20,7 @@
 		<div id="divSalOuv" class="divSalons">
 			<ul>
 				<?php foreach ($tabSalonsOuverts as $salon): ?>
-					<li><?= $salon["nom"] ?></li>
+					<li onclick="afficheSalon('<?= $salon["id_salon"] ?>');"><?= $salon["nom"] ?></li>
 				<?php endforeach; ?>
 			</ul>
 		</div>
@@ -28,7 +28,7 @@
 		<div id="divSalAve" class="divSalons">
 			<ul>
 				<?php foreach ($tabSalonsAvenir as $salon): ?>
-					<li onclick="afficheSalon('<?= $salon["id_salon"] ?>');"><?= $salon["nom"] ?></li>
+					<li><?= $salon["nom"] ?></li>
 				<?php endforeach; ?>
 			</ul>
 		</div>

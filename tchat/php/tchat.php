@@ -26,7 +26,7 @@
 		try {
 			$pdoStmt->execute();
 		} catch(PDOException $e) {
-			// En cas d'erreur, j'affiche l'affiche et je stope le script
+			// En cas d'erreur, je l'affiche et je stope le script
 			die($e->getCode() . " / " . $e->getMessage());
 		}
 		// On récupère les enregistrements sous forme d'un tableau
