@@ -134,10 +134,10 @@
 		$pdo = NULL; // On "désalloue" l'objet de la connexion -> fin de la cnx
 		foreach($res as $enrg) {
 			echo $enrg["envoi"] . 
-			     " --- (" . 
+			     ";" . 
 				 $enrg["pseudo"] . 
-				 ") : " . 
-				 $enrg["contenu"] . "<br />\n";
+				 ";" . 
+				 $enrg["contenu"] . "\n";
 		}
 		die();
 	}
