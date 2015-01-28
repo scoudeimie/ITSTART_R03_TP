@@ -16,13 +16,11 @@ function authentification() {
  * @param id_salon Id du salon dont on affiche les messages
  */
 function afficheSalon(id_salon) {
-	// Je récupère l'objet javascript représentant la div contenant les messages
-	var objMessages = document.getElementById('messages'); 
-	
+	// Utilisation de la méthode get de jQuery
 	$.get( "/tchat/php/index.php", 
-		   { action: "messages",
+		   { action: "messages", // Liste des infos que l'on envoie
 		     id_salon: id_salon },
-	       function( data ) {
+	       function( data ) { // Fonction de callback en cas de succès
 				// Je mets en forme le contenu reçu
 				var ctn = "";
 				var tabMsgs = data.split("\n");
@@ -39,6 +37,7 @@ function afficheSalon(id_salon) {
 						ctn += " : <span class='message'>" + msgMsg + "<span></p>";
 					}	
 				}
+				// Je mets à jour le contenu du div d'id "messages"
 				$("#messages").html(ctn);
 		   }
 	);
