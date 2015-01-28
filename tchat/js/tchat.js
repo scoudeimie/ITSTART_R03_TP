@@ -11,11 +11,45 @@ function authentification() {
 }	
 
 /**
- * Fonction qui affiche les messages d'un salon
+ * Fonction qui affiche les messages d'un salon (en utilisant jQuery)
  *
  * @param id_salon Id du salon dont on affiche les messages
  */
 function afficheSalon(id_salon) {
+	// Je récupère l'objet javascript représentant la div contenant les messages
+	var objMessages = document.getElementById('messages'); 
+	
+	$.get( "/tchat/php/index.php", 
+		   { action: "messages",
+		     id_salon: id_salon },
+	       function( data ) {
+				// Je mets en forme le contenu reçu
+				var ctn = "";
+				var tabMsgs = data.split("\n");
+				for(var i = 0; i < tabMsgs.length; i++) {
+					tabMsgs[i] = tabMsgs[i].trim();
+					if (tabMsgs[i] != "") {
+						var tabMsg = tabMsgs[i].split(";");
+						var msgTime = tabMsg[0].split(" ");
+						msgTime = msgTime[1];
+						var msgUser = tabMsg[1];
+						var msgMsg = tabMsg[2];
+						ctn += "<p class='message'>" + msgTime;
+						ctn += " (<span class='pseudo'>" + msgUser + "</span>)";
+						ctn += " : <span class='message'>" + msgMsg + "<span></p>";
+					}	
+				}
+				$("#messages").html(ctn);
+		   }
+	);
+}	
+
+/**
+ * Fonction (old) qui affiche les messages d'un salon
+ *
+ * @param id_salon Id du salon dont on affiche les messages
+ */
+function afficheSalonOld(id_salon) {
 	// Je récupère l'objet javascript représentant la div contenant les messages
 	var objMessages = document.getElementById('messages'); 
 	// J'instancie la classe me permettant de faire une requête HTTP
