@@ -27,6 +27,7 @@
 			die();
 		case 'asalon':
 		case 'messages':
+		case 'salonsouverts':
 			include(__DIR__ . "/salon.php");
 			break;
 		case 'adeconnexion':

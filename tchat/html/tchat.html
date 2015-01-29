@@ -17,11 +17,6 @@
 	<nav>
 		<p>Salons ouverts :</p>
 		<div id="divSalOuv" class="divSalons">
-			<ul>
-				<?php foreach ($tabSalonsOuverts as $salon): ?>
-					<li onclick="afficheSalon('<?= $salon["id_salon"] ?>');"><?= $salon["nom"] ?></li>
-				<?php endforeach; ?>
-			</ul>
 		</div>
 		<p>Salons &agrave; venir :</p>
 		<div id="divSalAve" class="divSalons">
@@ -45,5 +40,8 @@
 			</form>
 		</div>
 	</div>	
+	<script type="text/javascript">
+		updateSalons();
+	</script>
 	</body>
 </html>	

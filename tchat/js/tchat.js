@@ -96,3 +96,32 @@ function deconnexion() {
 		);		
 	} 
 }
+
+/**
+ * Cette fonction doit être appelée régulièrement pour "raffraichir" 
+ * la liste des salons ouverts et à venir
+ */
+function updateSalons() {
+	// Utilisation de la méthode get de jQuery
+	$.get( "/tchat/php/index.php", 
+		   { action: "salonsouverts" }, // Liste des infos que l'on envoie
+	       function( data ) { // Fonction de callback en cas de succès
+				// Je mets en forme le contenu reçu
+				var ctn = "<ul>";
+				var tabSalons = data.split("\n");
+				for(var i = 0; i < tabSalons.length; i++) {
+					tabSalons[i] = tabSalons[i].trim();
+					if (tabSalons[i] != "") {
+						var tabSalon = tabSalons[i].split(";");
+						var salonId = tabSalon[0];
+						var salonLibelle = tabSalon[1];
+						ctn += "<li onclick=\"afficheSalon('" + salonId + "');\">";
+						ctn += salonLibelle + "</li>";
+					}	
+				}
+				ctn += "</ul>";
+				// Je mets à jour le contenu du div d'id "divSalOuv"
+				$("#divSalOuv").html(ctn);
+		   }
+	);
+}	
