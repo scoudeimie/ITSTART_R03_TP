@@ -29,6 +29,9 @@
 		case 'messages':
 			include(__DIR__ . "/salon.php");
 			break;
+		case 'adeconnexion':
+			include(__DIR__ . "/lib.inc.php");
+			deconnexion();
 		case 'fauthentification':
 		default:
 			$self .= "?action=aauthentification";

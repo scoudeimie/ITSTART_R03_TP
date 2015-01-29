@@ -86,6 +86,13 @@ function afficheSalonOld(id_salon) {
 function deconnexion() {
 	var res = confirm("Êtes-vous sur de vouloir vous déconnecter ?");
 	if (res == true) {
-		alert('Yes !');
+		$.get( "/tchat/php/index.php", 
+				{ action: "adeconnexion" },
+				function( data ) { // Fonction de callback en cas de succ鳍
+					// Je redirige vers l'URL renvoyée
+					document.location.href = data;
+					// $(location).attr('href', data);
+				}
+		);		
 	} 
 }

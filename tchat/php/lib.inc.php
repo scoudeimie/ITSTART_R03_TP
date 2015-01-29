@@ -22,7 +22,18 @@
 			include(__DIR__ . "/index.php");
 			die();
 		}
-    }		
-			
+    }	
+
+	/**
+	 * Réalise la déconnexion de l'utilisateur
+	 * 
+	 * Supprime les variables de session ainsi que la session elle-même
+	 * Renvoie l'URL vers laquelle on redirige l'utilisateur
+	 */
+	function deconnexion() {
+		unset($_SESSION);
+		session_destroy();
+		die("/tchat/php/index.php");
+	}		
 			
 			
