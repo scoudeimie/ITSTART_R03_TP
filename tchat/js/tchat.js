@@ -124,4 +124,26 @@ function updateSalons() {
 				$("#divSalOuv").html(ctn);
 		   }
 	);
+	// Utilisation de la méthode get de jQuery
+	$.get( "/tchat/php/index.php", 
+		   { action: "salonsavenir" }, // Liste des infos que l'on envoie
+	       function( data ) { // Fonction de callback en cas de succès
+				// Je mets en forme le contenu reçu
+				var ctn = "<ul>";
+				var tabSalons = data.split("\n");
+				for(var i = 0; i < tabSalons.length; i++) {
+					tabSalons[i] = tabSalons[i].trim();
+					if (tabSalons[i] != "") {
+						var tabSalon = tabSalons[i].split(";");
+						var salonOuverture = tabSalon[0];
+						var salonLibelle = tabSalon[1];					
+						ctn += "<li title=\"" + salonOuverture + "\">";
+						ctn += salonLibelle + "</li>";
+					}	
+				}
+				ctn += "</ul>";
+				// Je mets à jour le contenu du div d'id "divSalAve"
+				$("#divSalAve").html(ctn);
+		   }
+	);
 }	

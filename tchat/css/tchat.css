@@ -162,3 +162,11 @@ footer p {
 span.message {
 	font-weight: bold;
 }
+
+#divSalOuv li {
+	cursor: pointer;
+}	
+
+#divSalAve li {
+	cursor: help;
+}	

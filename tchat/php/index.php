@@ -28,6 +28,7 @@
 		case 'asalon':
 		case 'messages':
 		case 'salonsouverts':
+		case 'salonsavenir':
 			include(__DIR__ . "/salon.php");
 			break;
 		case 'adeconnexion':

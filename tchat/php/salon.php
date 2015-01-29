@@ -159,7 +159,7 @@
 		$pdo = cnxBDD($dbConf);
 		// Exécution de la requête
 		// Je définie le "modèle" de ma requête
-		$req = "SELECT nom, id_salon FROM salon ";
+		$req = "SELECT nom, id_salon, ouverture FROM salon ";
 		if (!$ouvert) 
 			$req .= "WHERE NOW() < ouverture";
 		else 
@@ -215,6 +215,14 @@
 			$res .= $salon["id_salon"] . ";" . $salon["nom"] . "\n";
 		}	
 		die($res);
+	} else if ($action == "salonsavenir") {
+		// On demande la liste des salons qui sont à venir
+		$liste = getSalons(false);
+		$res = "";
+		foreach($liste as $salon) {
+			$res .= $salon["ouverture"] . ";" . $salon["nom"] . "\n";
+		}	
+		die($res);		
 	} else {
 		// Si pas de soumission de formulaire, on affiche le formulaire
 		$listeDurees = creerListeDureesOuveture();

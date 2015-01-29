@@ -20,11 +20,6 @@
 		</div>
 		<p>Salons &agrave; venir :</p>
 		<div id="divSalAve" class="divSalons">
-			<ul>
-				<?php foreach ($tabSalonsAvenir as $salon): ?>
-					<li><?= $salon["nom"] ?></li>
-				<?php endforeach; ?>
-			</ul>
 		</div>
 	</nav>
 	<footer>
@@ -42,6 +37,8 @@
 	</div>	
 	<script type="text/javascript">
 		updateSalons();
+		// Appel toutes les 20 secondes de updateSalons
+		setInterval("updateSalons();", 20000);
 	</script>
 	</body>
 </html>	
