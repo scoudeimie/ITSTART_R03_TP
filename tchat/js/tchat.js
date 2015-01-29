@@ -79,3 +79,13 @@ function afficheSalonOld(id_salon) {
 	};
 	xmlhttp.send(null);	
 }	
+
+/**
+ * Fonction appelée pour se déconnecter
+ */
+function deconnexion() {
+	var res = confirm("Êtes-vous sur de vouloir vous déconnecter ?");
+	if (res == true) {
+		alert('Yes !');
+	} 
+}
