@@ -1,6 +1,6 @@
 <?php
 	
-	require("libbdd.inc.php");
+	require_once("lib.inc.php");
 	
 	define('INSCR_OK', 1);
 	define('INSCR_PSEUDO_EXIST', 2);

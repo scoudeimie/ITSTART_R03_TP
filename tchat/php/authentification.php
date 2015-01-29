@@ -1,18 +1,6 @@
 <?php
 
-	// phpinfo();
-	
-	// var_dump($_POST);
-	
-	// Création d'un tableau associatif
-	/*$lesLogins = array();
-	$lesLogins["serge"] = "coucou";
-	$lesLogins["denis"] = "toto";
-	$lesLogins["célia"] = "titi";
-	*/
-	
-	//include("config.inc.php");
-	require("libbdd.inc.php");
+	require_once("lib.inc.php");
 	
 	define("AUTH_OK", 2);
 	define("AUTH_MDP_KO", 1);
@@ -38,7 +26,7 @@
 		// Exécution de la requête
 		// Je recherche l'enregistrement qui correspond à mon pseudo
 		// Je définie le "modèle" de ma requête
-		$req = "SELECT pseudo, password FROM Utilisateur " .
+		$req = "SELECT pseudo, password, id_profil FROM Utilisateur " .
 			   "WHERE pseudo=:pseudo";
 		// Je prépare ma requête et j'obtient un objet la représentant
 		$pdoStmt = $pdo->prepare($req);
@@ -56,8 +44,12 @@
 		if ($row) {
 			// 2 possibilités !
 			// Soit les mots de passe correspondent (leur empreinte)
-			if ($row["password"] == $password) 
+			if ($row["password"] == $password) {
+				// On place les deux informations dans la session
+				$_SESSION["user_pseudo"] = trim($pseudo);
+				$_SESSION["user_profil"] = $row["id_profil"];
 				return AUTH_OK;
+			}	
 			else // les mots de passe ne correspondent pas (leur empreinte)
 				return AUTH_MDP_KO;
 		} else {
@@ -124,7 +116,7 @@
 	 * @param $msg Message à afficher
 	 * @param $res Cela s'est-il bien passé ou non ?
 	 */
-	function afficheResultat($msg, $res) {
+	function afficheResultatAuth($msg, $res) {
 		global $self;
 		// Si cela s'est bien passé
 		if ($res) {
@@ -147,14 +139,16 @@
 		// Selon le "code" résultat de l'authentification
 		switch($res) {
 			case AUTH_PSEUDO_KO : 
-				afficheResultat("Vous n'&ecirc;tes pas connu dans la base...",
+				afficheResultatAuth("Vous n'&ecirc;tes pas connu dans la base...",
 								false);
 			case AUTH_MDP_KO :
-				afficheResultat("Mauvais couple identifiant / mot de passe...",
+				afficheResultatAuth("Mauvais couple identifiant / mot de passe...",
 								false);
 			case AUTH_OK :
-				afficheResultat("Bonjour " . $_POST["pseudo"] . "!",
-								true);
+				/*afficheResultatAuth("Bonjour " . $_POST["pseudo"] . "!",
+								true); */
+				include_once(__DIR__ . "/tchat.php");
+				die();
 		}
 	} else {
 		// Si pas de soumission de formulaire, on affiche le formulaire

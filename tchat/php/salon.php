@@ -1,6 +1,9 @@
 <?php
 	
-	require("libbdd.inc.php");
+	require_once("lib.inc.php");
+	
+	// On doit être authentifie pour continuer
+	estAuthentifie();
 	
 	define('SALON_CREATION_OK', 1);
 	define('SALON_NOM_EXIST', 2);

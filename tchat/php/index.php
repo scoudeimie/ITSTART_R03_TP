@@ -1,11 +1,14 @@
 <?php
 
-	if (isset($_GET["action"])) 
-		$action = $_GET["action"];
-	else
-		$action = "";
-		
-	$self = $_SERVER["PHP_SELF"];	
+	if (!isset($action)) {
+		if (isset($_GET["action"])) 
+			$action = $_GET["action"];
+		else
+			$action = "";
+	}		
+	
+	if (!isset($self)) 
+		$self = $_SERVER["PHP_SELF"];	
 		
 	switch($action) {
 		case 'finscription':

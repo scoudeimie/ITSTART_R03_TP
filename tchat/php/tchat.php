@@ -1,7 +1,10 @@
 <?php
 	
-	require("libbdd.inc.php");
+	require_once("lib.inc.php");
 	
+	// On doit être authentifie
+	estAuthentifie();
+
 	/**
 	 * Renvois la liste des salons (ouverts ou à venir)
 	 *
