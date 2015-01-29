@@ -18,10 +18,6 @@
 		case 'ainscription':
 			include(__DIR__ . "/inscription.php");
 			break;
-		case 'fauthentification':
-			$self .= "?action=aauthentification";
-			include(__DIR__ . "/authentification.php");
-			die();
 		case 'aauthentification':
 			include(__DIR__ . "/authentification.php");
 			break;
@@ -33,7 +29,10 @@
 		case 'messages':
 			include(__DIR__ . "/salon.php");
 			break;
+		case 'fauthentification':
 		default:
-			die("Vous demandez a avoir le formulaire d'authentification (2)");
+			$self .= "?action=aauthentification";
+			include(__DIR__ . "/authentification.php");
+			die();			
 	}		
 			
