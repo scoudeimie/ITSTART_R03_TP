@@ -148,4 +148,29 @@ function updateSalons() {
 				$("#divSalAve").html(ctn);
 		   }
 	);
+}
+
+/**
+ * Active ou non le bouton d'envoi de messages
+ *
+ * @param actif Vrai pour activer, faux pour désactiver
+ */
+function activeSendMessageButton(actif) {
+	$("#bSendMsg").attr("disabled", actif ? false : true);
 }	
+
+/**
+ * Est appelée lorsque le contenu du champs de saisie est modifié
+ *
+ * Suivant le contenu du champs de saisie, active ou non le bouton
+ * "envoyer"
+ */
+function changeSaisie() {
+	var msg = $("#message").val();
+	msg = msg.trim();
+	if (msg == "") {
+		activeSendMessageButton(false);
+	} else {
+		activeSendMessageButton(true);
+	}	
+}
