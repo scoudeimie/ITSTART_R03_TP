@@ -36,8 +36,14 @@
 			deconnexion();
 		case 'fauthentification':
 		default:
-			$self .= "?action=aauthentification";
-			include(__DIR__ . "/authentification.php");
-			die();			
+			session_start();
+			if (isset($_SESSION["user_pseudo"])) {
+				include(__DIR__ . "/tchat.php");
+				die();
+			} else {
+				$self .= "?action=aauthentification";
+				include(__DIR__ . "/authentification.php");
+				die();
+			}
 	}		
 			
