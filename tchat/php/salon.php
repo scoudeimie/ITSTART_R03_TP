@@ -159,11 +159,21 @@
 		$pdo = cnxBDD($dbConf);
 		// Exécution de la requête
 		// Je définie le "modèle" de ma requête
-		$req = "SELECT nom, id_salon, ouverture FROM salon ";
-		if (!$ouvert) 
+		if (!$ouvert) {
+			$req = "SELECT nom, id_salon, ouverture FROM salon ";
 			$req .= "WHERE NOW() < ouverture";
-		else 
+		} else {	
+			$req = "SELECT nom, id_salon, ";
+			$req .= "CASE (TIMEDIFF(ADDTIME(ouverture, duree), NOW()) < '24:00:00') ";
+			$req .= "WHEN true ";
+			$req .= "THEN ";
+			$req .= "TIMEDIFF(ADDTIME(ouverture, duree), NOW()) ";
+			$req .= "ELSE ";
+			$req .= "CONCAT(DATEDIFF(ADDTIME(ouverture, duree), NOW()), 'j') ";
+			$req .= "END AS delai ";
+			$req .= "FROM salon ";
 			$req .= "WHERE NOW() BETWEEN ouverture AND ADDTIME(ouverture, duree)";
+		}	
 		// Je prépare ma requête et j'obtient un objet la représentant
 		$pdoStmt = $pdo->prepare($req);
 		// J'exécute ma requête
@@ -212,7 +222,9 @@
 		$liste = getSalons(true);
 		$res = "";
 		foreach($liste as $salon) {
-			$res .= $salon["id_salon"] . ";" . $salon["nom"] . "\n";
+			$res .= $salon["id_salon"] . ";";
+			$res .= $salon["nom"] . ";";
+			$res .= $salon["delai"] . "\n";
 		}	
 		die($res);
 	} else if ($action == "salonsavenir") {

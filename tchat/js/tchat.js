@@ -115,7 +115,9 @@ function updateSalons() {
 						var tabSalon = tabSalons[i].split(";");
 						var salonId = tabSalon[0];
 						var salonLibelle = tabSalon[1];
-						ctn += "<li onclick=\"afficheSalon('" + salonId + "');\">";
+						var salonDelai = tabSalon[2];
+						ctn += "<li onclick=\"afficheSalon('" + salonId + "');\" ";
+						ctn += "title=\"il reste " + salonDelai + "\">";
 						ctn += salonLibelle + "</li>";
 					}	
 				}
