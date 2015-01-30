@@ -30,7 +30,14 @@ function afficheSalon(id_salon) {
 	       function( data ) { // Fonction de callback en cas de succès
 				// Je mets en forme le contenu reçu
 				var ctn = "";
-				var tabMsgs = data.split("\n");
+				eval("var tabMsgs = " + data + ";");
+				for(var i = 0; i < tabMsgs.length; i++) {
+					var m = tabMsgs[i];
+					ctn += "<p class='message'>" + m.envoi;
+					ctn += " (<span class='pseudo'>" + m.pseudo + "</span>)";
+					ctn += " : <span class='message'>" + m.contenu + "<span></p>";
+				}
+				/*var tabMsgs = data.split("\n");
 				for(var i = 0; i < tabMsgs.length; i++) {
 					tabMsgs[i] = tabMsgs[i].trim();
 					if (tabMsgs[i] != "") {
@@ -43,7 +50,7 @@ function afficheSalon(id_salon) {
 						ctn += " (<span class='pseudo'>" + msgUser + "</span>)";
 						ctn += " : <span class='message'>" + msgMsg + "<span></p>";
 					}	
-				}
+				}*/
 				// Je mets à jour le contenu du div d'id "messages"
 				$("#messages").html(ctn);
 				$("#messages").attr({ scrollTop: $("#messages").attr("scrollHeight") });
@@ -147,7 +154,13 @@ function updateSalons() {
 	       function( data ) { // Fonction de callback en cas de succès
 				// Je mets en forme le contenu reçu
 				var ctn = "<ul>";
-				var tabSalons = data.split("\n");
+				eval("var tabSalons = " + data + ";");
+				for(var i = 0; i < tabSalons.length; i++) {
+					var s = tabSalons[i];
+					ctn += "<li title=\"" + s.ouverture + "\">";
+					ctn += s.nom + "</li>";
+				}	
+				/*var tabSalons = data.split("\n");
 				for(var i = 0; i < tabSalons.length; i++) {
 					tabSalons[i] = tabSalons[i].trim();
 					if (tabSalons[i] != "") {
@@ -157,7 +170,7 @@ function updateSalons() {
 						ctn += "<li title=\"" + salonOuverture + "\">";
 						ctn += salonLibelle + "</li>";
 					}	
-				}
+				}*/
 				ctn += "</ul>";
 				// Je mets à jour le contenu du div d'id "divSalAve"
 				$("#divSalAve").html(ctn);

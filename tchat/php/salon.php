@@ -136,16 +136,16 @@
 		$res = $pdoStmt->fetchAll(PDO::FETCH_ASSOC);
 		$pdoStmt = NULL; // On "désalloue" l'objet représentant la requête
 		$pdo = NULL; // On "désalloue" l'objet de la connexion -> fin de la cnx
-		header('Content-Type: text/html; charset=utf-8');
+		/***header('Content-Type: text/html; charset=utf-8');
 		foreach($res as $enrg) {
 			echo $enrg["envoi"] . 
 			     ";" . 
 				 $enrg["pseudo"] . 
 				 ";" . 
 				 $enrg["contenu"] . "\n";
-		}
+		}*/
 		$_SESSION["id_salon_encours"] = $id_salon;
-		die();
+		die(json_encode($res));
 	}
 	
 	/**
@@ -276,11 +276,12 @@
 	} else if ($action == "salonsavenir") {
 		// On demande la liste des salons qui sont à venir
 		$liste = getSalons(false);
-		$res = "";
+		die(json_encode($liste));
+		/*$res = "";
 		foreach($liste as $salon) {
 			$res .= $salon["ouverture"] . ";" . $salon["nom"] . "\n";
 		}	
-		die($res);
+		die($res);*/
 	} else if ($action == "envoimessage") {
 		sendSalonMessage($_SESSION["id_salon_encours"], 
 					     $_SESSION["user_id"],
