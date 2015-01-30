@@ -143,6 +143,7 @@
 				 ";" . 
 				 $enrg["contenu"] . "\n";
 		}
+		$_SESSION["id_salon_encours"] = $id_salon;
 		die();
 	}
 	
@@ -190,6 +191,42 @@
 		return $res; // On renvoie le tableau
 	} // Fin de la fonction getSalons
 	
+	/**
+	 * Envois un message dans un salon
+	 *
+	 * @param $id_salon Id du salon
+	 * @param $id_utilisateur Id de l'utilisateur
+	 * @param $msg Message à envoyer
+	 */
+	function sendSalonMessage($id_salon, $id_utilisateur, $msg) {
+		// Chargement de la configuration
+		$dbConf = chargeConfiguration();
+		// Connexion à la base de données
+		$pdo = cnxBDD($dbConf);
+		// Exécution de la requête
+		// Je définie le "modèle" de ma requête
+		$req = "INSERT INTO message ";
+		$req .= "(envoi, contenu, a_moderer, id_utilisateur, id_salon) ";
+		$req .= "VALUES ";
+		$req .= "(NOW(), :contenu, false, :id_utilisateur, :id_salon)";
+		// Je prépare ma requête et j'obtient un objet la représentant
+		$pdoStmt = $pdo->prepare($req);
+		// J'associe mes variables
+		$pdoStmt->bindParam(':contenu', $msg);
+		$pdoStmt->bindParam(':id_utiisateur', $id_utilisateur);
+		$pdoStmt->bindParam(':id_salon', $id_salon);
+		// J'exécute ma requête
+		try {
+			$pdoStmt->execute();
+		} catch(PDOException $e) {
+			// En cas d'erreur, je l'affiche et je stope le script
+			die("KO");
+		}
+		$pdoStmt = NULL; // On "désalloue" l'objet représentant la requête
+		$pdo = NULL; // On "désalloue" l'objet de la connexion -> fin de la cnx
+		die("OK");
+	} // Fin de la fonction sendSalonMessage
+	
 	// Si il y a eu soumission de formulaire
 	if (isset($_POST["salonNom"])) {
 		// Si le nom est correct
@@ -234,7 +271,11 @@
 		foreach($liste as $salon) {
 			$res .= $salon["ouverture"] . ";" . $salon["nom"] . "\n";
 		}	
-		die($res);		
+		die($res);
+	} else if ($action == "envoimessage") {
+		sendSalonMessage($_SESSION["id_salon_encours"], 
+					     $_SESSION["user_id"],
+						 $_POST["msg"]);
 	} else {
 		// Si pas de soumission de formulaire, on affiche le formulaire
 		$listeDurees = creerListeDureesOuveture();

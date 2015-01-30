@@ -3,6 +3,8 @@
 	if (!isset($action)) {
 		if (isset($_GET["action"])) 
 			$action = $_GET["action"];
+		else if (isset($_POST["action"])) 
+			$action = $_POST["action"];	
 		else
 			$action = "";
 	}		
@@ -29,6 +31,7 @@
 		case 'messages':
 		case 'salonsouverts':
 		case 'salonsavenir':
+		case 'envoimessage':
 			include(__DIR__ . "/salon.php");
 			break;
 		case 'adeconnexion':

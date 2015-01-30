@@ -26,7 +26,7 @@
 		// Exécution de la requête
 		// Je recherche l'enregistrement qui correspond à mon pseudo
 		// Je définie le "modèle" de ma requête
-		$req = "SELECT pseudo, password, id_profil FROM Utilisateur " .
+		$req = "SELECT pseudo, password, id_profil, id_utilisateur FROM Utilisateur " .
 			   "WHERE pseudo=:pseudo";
 		// Je prépare ma requête et j'obtient un objet la représentant
 		$pdoStmt = $pdo->prepare($req);
@@ -45,9 +45,10 @@
 			// 2 possibilités !
 			// Soit les mots de passe correspondent (leur empreinte)
 			if ($row["password"] == $password) {
-				// On place les deux informations dans la session
+				// On place les trois informations dans la session
 				$_SESSION["user_pseudo"] = trim($pseudo);
 				$_SESSION["user_profil"] = $row["id_profil"];
+				$_SESSION["user_id"] = $row["id_utilisateur"];
 				return AUTH_OK;
 			}	
 			else // les mots de passe ne correspondent pas (leur empreinte)

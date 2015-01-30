@@ -174,3 +174,18 @@ function changeSaisie() {
 		activeSendMessageButton(true);
 	}	
 }
+
+/** 
+ * Envois un message vers le serveur pour y être enregistré
+ */
+function sendMessage() {
+	$.post( "/tchat/php/index.php", 
+		   { action: "envoimessage",
+             msg: $("#message").val()  }, // Liste des infos que l'on envoie
+	       function( data ) { // Fonction de callback en cas de succès
+				if (data == "KO") {
+					alert("votre message n'a pas été envoyé...");
+				}	
+		   }
+	);
+}
