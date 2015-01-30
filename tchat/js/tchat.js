@@ -53,7 +53,7 @@ function afficheSalon(id_salon) {
 				}*/
 				// Je mets à jour le contenu du div d'id "messages"
 				$("#messages").html(ctn);
-				$("#messages").attr({ scrollTop: $("#messages").attr("scrollHeight") });
+				$("#messages").prop({ scrollTop: $("#messages").prop("scrollHeight") });
 		   }
 	);
 }	
