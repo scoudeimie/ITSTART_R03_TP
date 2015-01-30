@@ -46,6 +46,7 @@ function afficheSalon(id_salon) {
 				}
 				// Je mets à jour le contenu du div d'id "messages"
 				$("#messages").html(ctn);
+				$("#messages").attr({ scrollTop: $("#messages").attr("scrollHeight") });
 		   }
 	);
 }	
@@ -115,7 +116,14 @@ function updateSalons() {
 	       function( data ) { // Fonction de callback en cas de succès
 				// Je mets en forme le contenu reçu
 				var ctn = "<ul>";
-				var tabSalons = data.split("\n");
+				eval("var tabSalons = " + data + ";");
+				for(var i = 0; i < tabSalons.length; i++) {
+					var s = tabSalons[i];
+					ctn += "<li onclick=\"afficheSalon('" + s.id_salon + "');\" ";
+					ctn += "title=\"il reste " + s.delai + "\">";
+					ctn += s.nom + "</li>";
+				}	
+				/*var tabSalons = data.split("\n");
 				for(var i = 0; i < tabSalons.length; i++) {
 					tabSalons[i] = tabSalons[i].trim();
 					if (tabSalons[i] != "") {
@@ -127,7 +135,7 @@ function updateSalons() {
 						ctn += "title=\"il reste " + salonDelai + "\">";
 						ctn += salonLibelle + "</li>";
 					}	
-				}
+				}*/
 				ctn += "</ul>";
 				// Je mets à jour le contenu du div d'id "divSalOuv"
 				$("#divSalOuv").html(ctn);
@@ -194,6 +202,7 @@ function sendMessage() {
 					alert("votre message n'a pas été envoyé...");
 				} else {
 					$("#message").val("");
+					activeSendMessageButton(false);
 				}
 		   }
 	);

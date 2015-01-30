@@ -265,13 +265,14 @@
 	} else if ($action == "salonsouverts") {
 		// On demande la liste des salons qui sont ouverts
 		$liste = getSalons(true);
-		$res = "";
+		die(json_encode($liste));
+/*		$res = "";
 		foreach($liste as $salon) {
 			$res .= $salon["id_salon"] . ";";
 			$res .= $salon["nom"] . ";";
 			$res .= $salon["delai"] . "\n";
 		}	
-		die($res);
+		die($res);*/
 	} else if ($action == "salonsavenir") {
 		// On demande la liste des salons qui sont à venir
 		$liste = getSalons(false);
