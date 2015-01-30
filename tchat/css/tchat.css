@@ -135,7 +135,7 @@ footer p {
 
 #messages {
 	height: 27vmax;
-	
+	overflow: auto;
 }
 
 #divFormMsg {
@@ -143,10 +143,11 @@ footer p {
 	font-size: 12px;
 }
 
-#divFormMsg input[type="text"] {
+#message {
 	width: 70%;
 }
-#divFormMsg input[type="submit"] {
+
+#bSendMsg {
 	font-size: 10px;
 	width: 25%;
 }

@@ -119,7 +119,8 @@
 		$req = "SELECT envoi, contenu, pseudo " .
 			   "FROM message m ".
 			   "INNER JOIN utilisateur u ON m.id_utilisateur = u.id_utilisateur " . 
-			   "WHERE id_salon = :id_salon;";
+			   "WHERE id_salon = :id_salon " .
+			   "ORDER BY id_message;";
 		// Je prépare ma requête et j'obtient un objet la représentant
 		$pdoStmt = $pdo->prepare($req);
 		// J'associe à ma requête le contenu de la variable
@@ -213,7 +214,7 @@
 		$pdoStmt = $pdo->prepare($req);
 		// J'associe mes variables
 		$pdoStmt->bindParam(':contenu', $msg);
-		$pdoStmt->bindParam(':id_utiisateur', $id_utilisateur);
+		$pdoStmt->bindParam(':id_utilisateur', $id_utilisateur);
 		$pdoStmt->bindParam(':id_salon', $id_salon);
 		// J'exécute ma requête
 		try {
@@ -251,9 +252,16 @@
 			afficheResultat("Le nom du salon n'est pas correct...",
 							false);
 		}
-	} else if (isset($_GET["id_salon"])) {
-		// On demande la liste des messages d'un salon
-		getSalonMessages($_GET["id_salon"]);
+	} else if ($action == "messages") {
+		if (isset($_GET["id_salon"])) {
+			// On demande la liste des messages d'un salon
+			getSalonMessages($_GET["id_salon"]);
+		} else {
+			if (isset($_SESSION["id_salon_encours"]))
+				getSalonMessages($_SESSION["id_salon_encours"]);
+			else 
+				die();
+		}
 	} else if ($action == "salonsouverts") {
 		// On demande la liste des salons qui sont ouverts
 		$liste = getSalons(true);

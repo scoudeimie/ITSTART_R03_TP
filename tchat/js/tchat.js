@@ -1,5 +1,5 @@
 /**
- * Ensemble des fonctions javascript de Tchat Privé
+ * Ensemble des fonctions javascript de Tchat PrivÃ©
  *
  */
 
@@ -16,12 +16,19 @@ function authentification() {
  * @param id_salon Id du salon dont on affiche les messages
  */
 function afficheSalon(id_salon) {
-	// Utilisation de la méthode get de jQuery
+	// Utilisation de la mÃ©thode get de jQuery
+	var donnees;
+	// Liste des infos que l'on envoie
+	if (id_salon == undefined) {
+		donnees = { action: "messages" };
+	} else {
+		donnees = { action: "messages", 
+		     id_salon: id_salon };
+	}
 	$.get( "/tchat/php/index.php", 
-		   { action: "messages", // Liste des infos que l'on envoie
-		     id_salon: id_salon },
-	       function( data ) { // Fonction de callback en cas de succès
-				// Je mets en forme le contenu reçu
+		   donnees,
+	       function( data ) { // Fonction de callback en cas de succÃ¨s
+				// Je mets en forme le contenu reÃ§u
 				var ctn = "";
 				var tabMsgs = data.split("\n");
 				for(var i = 0; i < tabMsgs.length; i++) {
@@ -37,7 +44,7 @@ function afficheSalon(id_salon) {
 						ctn += " : <span class='message'>" + msgMsg + "<span></p>";
 					}	
 				}
-				// Je mets à jour le contenu du div d'id "messages"
+				// Je mets Ã  jour le contenu du div d'id "messages"
 				$("#messages").html(ctn);
 		   }
 	);
@@ -49,15 +56,15 @@ function afficheSalon(id_salon) {
  * @param id_salon Id du salon dont on affiche les messages
  */
 function afficheSalonOld(id_salon) {
-	// Je récupère l'objet javascript représentant la div contenant les messages
+	// Je rÃ©cupÃ¨re l'objet javascript reprÃ©sentant la div contenant les messages
 	var objMessages = document.getElementById('messages'); 
-	// J'instancie la classe me permettant de faire une requête HTTP
+	// J'instancie la classe me permettant de faire une requÃªte HTTP
 	var xmlhttp = new XMLHttpRequest();
 	// Je demande l'URL au serveur
 	xmlhttp.open("GET", "/tchat/php/index.php?action=messages&id_salon=" + id_salon, true);
 	xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
-			// Je mets en forme le contenu reçu
+			// Je mets en forme le contenu reÃ§u
 			var ctn = "";
 			var tabMsgs = xmlhttp.responseText.split("\n");
 			for(var i = 0; i < tabMsgs.length; i++) {
@@ -88,7 +95,7 @@ function deconnexion() {
 	if (res == true) {
 		$.get( "/tchat/php/index.php", 
 				{ action: "adeconnexion" },
-				function( data ) { // Fonction de callback en cas de succé³
+				function( data ) { // Fonction de callback en cas de succÃ¨s
 					// Je redirige vers l'URL renvoyÃ©e
 					document.location.href = data;
 					// $(location).attr('href', data);
@@ -153,14 +160,14 @@ function updateSalons() {
 /**
  * Active ou non le bouton d'envoi de messages
  *
- * @param actif Vrai pour activer, faux pour désactiver
+ * @param actif Vrai pour activer, faux pour dÃ©sactiver
  */
 function activeSendMessageButton(actif) {
 	$("#bSendMsg").attr("disabled", actif ? false : true);
 }	
 
 /**
- * Est appelée lorsque le contenu du champs de saisie est modifié
+ * Est appelÃ©e lorsque le contenu du champs de saisie est modifiÃ©
  *
  * Suivant le contenu du champs de saisie, active ou non le bouton
  * "envoyer"
@@ -176,7 +183,7 @@ function changeSaisie() {
 }
 
 /** 
- * Envois un message vers le serveur pour y être enregistré
+ * Envois un message vers le serveur pour y Ãªtre enregistrÃ©
  */
 function sendMessage() {
 	$.post( "/tchat/php/index.php", 
@@ -184,8 +191,10 @@ function sendMessage() {
              msg: $("#message").val()  }, // Liste des infos que l'on envoie
 	       function( data ) { // Fonction de callback en cas de succès
 				if (data == "KO") {
-					alert("votre message n'a pas été envoyé...");
-				}	
+					alert("votre message n'a pas Ã©tÃ© envoyÃ©...");
+				} else {
+					$("#message").val("");
+				}
 		   }
 	);
 }
